@@ -328,82 +328,35 @@
 
     <div class="capture">
       <span class="capture-label">Be the first to know</span>
-      <div class="capture-row">
+      <form
+        action="https://buttondown.com/api/emails/embed-subscribe/lintil"
+        method="post"
+        target="popupwindow"
+        class="capture-row"
+      >
         <input
           type="email"
+          name="email"
           class="capture-input"
           id="email-input"
           placeholder="your@practice.com"
           autocomplete="email"
+          required
         >
-        <button class="capture-btn" id="submit-btn" onclick="handleSubmit()">
+        <button type="submit" class="capture-btn">
           Notify me
         </button>
-      </div>
-      <p class="capture-note" id="capture-note">No spam. One email when we launch.</p>
+      </form>
+      <p class="capture-note">No spam. One email when we launch.</p>
     </div>
   </main>
 
   <footer>
-    <span class="footer-copy">Built for architecture practices &nbsp;·&nbsp; lintil.app</span>
+    <span class="footer-copy">Built for architecture practices  ·  lintil.app</span>
     <div class="reveal-mark" aria-hidden="true">
       <div class="reveal-mark-top"></div>
     </div>
   </footer>
-
-  <script>
-    async function handleSubmit() {
-      const input  = document.getElementById('email-input');
-      const btn    = document.getElementById('submit-btn');
-      const note   = document.getElementById('capture-note');
-      const email  = input.value.trim();
-
-      if (!email || !email.includes('@')) {
-        note.textContent = 'Please enter a valid email address.';
-        note.className = 'capture-note error';
-        return;
-      }
-
-      btn.disabled = true;
-      btn.textContent = '...';
-      note.textContent = '';
-      note.className = 'capture-note';
-
-      try {
-        const res = await fetch('https://api.buttondown.email/v1/subscribers', {
-          method: 'POST',
-          headers: {
-            'Authorization': 'Token dc129ae0-bc5c-426c-bd6b-7f566b050e90',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ email_address: email })
-        });
-
-        if (res.status === 201 || res.ok) {
-          input.value = '';
-          note.textContent = "You're on the list. We'll be in touch.";
-          note.className = 'capture-note success';
-          btn.textContent = 'Done';
-        } else if (res.status === 400) {
-          note.textContent = 'That email is already on the list.';
-          note.className = 'capture-note';
-          btn.disabled = false;
-          btn.textContent = 'Notify me';
-        } else {
-          throw new Error();
-        }
-      } catch {
-        note.textContent = 'Something went wrong. Email us at hello@lintil.app';
-        note.className = 'capture-note error';
-        btn.disabled = false;
-        btn.textContent = 'Notify me';
-      }
-    }
-
-    document.getElementById('email-input').addEventListener('keydown', e => {
-      if (e.key === 'Enter') handleSubmit();
-    });
-  </script>
 
 </body>
 </html>
